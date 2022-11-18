@@ -16,6 +16,8 @@ function calcReducer(calc, action) {
     case 'number': {
       let noLeadingZeros = calc[edited];
       
+      console.log(noLeadingZeros, calc[edited])
+
       if(!noLeadingZeros)
         noLeadingZeros = '';
 
@@ -37,6 +39,10 @@ function calcReducer(calc, action) {
 
     case 'percent': {
       newObj[edited] = (calc[edited] / 100).toFixed(2);
+
+      if(parseFloat(newObj[edited]) === 0)
+        newObj[edited] = '0';
+
       break;
     }
 
@@ -57,25 +63,28 @@ function calcReducer(calc, action) {
     }
 
     case 'calculate': {
+      if(!newObj.operator)
+        break;
+
       newObj.edited = 'a';
       newObj.b = null;
       newObj.operator = null;
 
       switch(calc.operator) {
         case '÷':
-          newObj.a = calc.a / calc.b;
+          newObj.a = (calc.a / calc.b).toString();
           break;
 
         case '×':
-          newObj.a = calc.a * calc.b;
+          newObj.a = (calc.a * calc.b).toString();
           break;
 
         case '−':
-          newObj.a = calc.a - calc.b;
+          newObj.a = (calc.a - calc.b).toString();
           break;
 
         case '+':
-          newObj.a = parseFloat(calc.a) + parseFloat(calc.b);
+          newObj.a = (parseFloat(calc.a) + parseFloat(calc.b)).toString();
           break;
 
         default:
